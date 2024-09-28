@@ -27,6 +27,7 @@ export const MatchDataProvider = ({ children }) => {
   const GAME_NAME = 'DAGESTAN WARRIOR'
   const TAG_LINE = 'NA1'
   const TARGET_CHAMPION_NAME = 'Vayne'
+  const region = 'na'
 
   //create .env and set to your port on backend (localhost:5000 or something) or backend hosting URI
   // like this " REACT_APP_BACKEND_SERVER_URI = http://localhost:5000" in .env file
@@ -179,6 +180,7 @@ export const MatchDataProvider = ({ children }) => {
       value={{
         GAME_NAME,
         TAG_LINE,
+        region,
         TARGET_CHAMPION_NAME,
         error429,
         account,

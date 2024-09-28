@@ -1,7 +1,6 @@
 # LoLShowcaseSite - How to use
 
-LoLShowcaseSite is a League of Legends website template for anyone to use and can be change very easily. You just have to put in your summoner name, tagline, and target champion to track - and you have your own website about your main champion.
-
+LoLShowcaseSite is a League of Legends website template for anyone to use and can be change very easily. You just have to put in your summoner name, tagline, and target champion to track - and you have your own website about your main champion. This is 
 ## Instructions
 
 This should be easy
@@ -23,8 +22,9 @@ cd into backend folder and type npm install
    - Here, rename line 34 to set to your goal rank. By default it is set to Challenger rank.
   
 2. /frontend/src/components/MatchDataContext
-   - Here, rename lines 27-29 to match your summoner name, tag line, and the champion you want to track. 
-3. Done
+   - Here, rename lines 27-29 to match your summoner name, tag line, region (na, euw1), and the champion you want to track. 
+3. /backend/server.js
+   - Here, do nothing if you are in NA. if you are another region, you must change lines 14-16 to match your region. set v5region to europe, and v4 region to euw1.  
 
 ### `npm start`
 

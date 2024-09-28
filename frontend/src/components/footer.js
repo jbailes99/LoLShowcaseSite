@@ -1,15 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
+
 import { FaHeart } from 'react-icons/fa'
 import opgg from '../assets/opgg.jpeg'
+import { MatchDataContext } from '../components/MatchDataContext'
 
 const Footer = () => {
+  const { GAME_NAME, TAG_LINE, region } = useContext(MatchDataContext)
+
   return (
     <footer className='bg-gray-900 py-4 text-white'>
       <div className='container mx-auto'>
         <div className='flex justify-center space-x-14 sm:mb-6'>
           <section className='text-center'>
             <a
-              href='https://www.op.gg/summoners/euw/razr708x54e3328-5451'
+              href={`https://www.op.gg/summoners/${region}/${GAME_NAME}-${TAG_LINE}`}
               target='_blank'
               rel='noopener noreferrer'
               className='max-w-xl w-60 inline-block px-4 py-2'
