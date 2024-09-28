@@ -1,6 +1,6 @@
 # LoLShowcaseSite - How to use
 
-Follow the steps below to set up this site personalized for you.
+LoLShowcaseSite is a League of Legends website template for anyone to use and can be change very easily. You just have to put in your summoner name, tagline, and target champion to track - and you have your own website about your main champion.
 
 ## Instructions
 
@@ -33,3 +33,5 @@ cd into backend folder and type npm install
 3. Both frontend and backend must be running
 4. Done
 
+### `get a domain, host the frontend and backend, and show it off!`
+enjoy
