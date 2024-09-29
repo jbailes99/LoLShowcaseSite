@@ -7,7 +7,7 @@ This should be easy
 
 ### `Create .env in frontend folder and backend folder`
 
-Create a .env file in the frontend and establish type in "REACT_APP_BACKEND_SERVER_URI=", we will set this equal to the port we establish in the backend folder, by default it is set to 5000 already. For example, it will look like this " REACT_APP_BACKEND_SERVER_URI=http://localhost:5000 ". You can change this later to direct to a backend hosting service to get your website live. 
+Create a .env file in the frontend and within the file, type in "REACT_APP_BACKEND_SERVER_URI=", we will set this equal to the port we establish in the backend folder, by default it is set to 5000 already. For example, it will look like this " REACT_APP_BACKEND_SERVER_URI=http://localhost:5000 ". You can change this later to direct to a backend hosting service to get your website live. 
 
 Now, in the backend folder, create another .env file and here we will set "API_KEY=" to the api key you can get for free on Riot API. https://developer.riotgames.com/apis 
 
