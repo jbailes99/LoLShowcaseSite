@@ -33,5 +33,5 @@ cd into backend folder and type npm install
 3. Both frontend and backend must be running
 4. Done
 
-### `get a domain, host the frontend and backend, and show it off!`
+### `run it locally or get a domain, host the frontend and backend, and show it off!`
 enjoy

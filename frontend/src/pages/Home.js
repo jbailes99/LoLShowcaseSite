@@ -14,13 +14,12 @@ import Emerald from '../assets/Rank=Emerald.png'
 const Home = () => {
   const {
     error429,
+    filtered,
     TARGET_CHAMPION_NAME,
-    GAME_NAME,
-    TAG_LINE,
+    loadingProgressBar,
     account,
     lastDravenWin,
     loading,
-    error,
     averageKDA,
     totalSkillshotsDodged,
     averageKillParticipation,
@@ -81,7 +80,6 @@ const Home = () => {
     IV: 1,
   }
   let progressPercentage = 0
-
   if (accountRank) {
     const currentRankNumeric = romanToNumeric[accountRank.rank] || 0
     const currentRankLP = rankLPThresholds[accountRank.tier]
@@ -91,7 +89,7 @@ const Home = () => {
 
     const currentProgressLP = currentRankLP - rankLPThresholds['IRON']
     const progressPercentage = Math.min((currentProgressLP / totalLPForProgress) * 100, 100)
-    console.log(progressPercentage)
+    console.log(accountRank)
   }
 
   return (
@@ -120,9 +118,20 @@ const Home = () => {
         <div className='p-12 text-2xl text-red-200 font-semibold'>
           the api is working double time rn. slow down bro. try again in a few sec
         </div>
+      ) : loading ? (
+        <div className='p-4'>
+          <div className='flex justify-center mt-4 mb-4 items-center mx-auto'>
+            <Bars color='white' height={32} width={32} />
+          </div>
+        </div>
       ) : (
         <div className='flex flex-col items-center p-6 rounded-lg'>
-          {accountRank.tier ? (
+          {loading ? (
+            <div>
+              {' '}
+              <Bars color='white' height={32} width={32} />
+            </div>
+          ) : accountRank ? (
             <div className='flex space-x-24 sm:mb-0 mb-4'>
               <div>
                 <div className='flex flex-col sm:flex-row items-center'>
@@ -159,20 +168,42 @@ const Home = () => {
               </div>
             </div>
           )}
-
-          <div className='relative w-full bg-gray-700 h-4 rounded-full mt-4 mb-4'>
-            <div
-              className='bg-green-500 h-full rounded-full'
-              style={{ width: `${accountRank ? progressPercentage : 0}%` }}
-            ></div>
-            <div
-              className='absolute top-[-24px] right-0 text-white font-semibold'
-              style={{ right: `${100 - (accountRank ? progressPercentage : 0)}%`, transform: 'translateX(50%)' }}
-            >
-              {accountRank ? Math.round(progressPercentage) : 0}%
+          {loadingProgressBar ? (
+            <div className='text-center text-lg font-semibold text-gray-800'>
+              {' '}
+              <Bars color='white' height={18} width={18} />
             </div>
-          </div>
-
+          ) : accountRank ? (
+            <div className='relative w-full bg-gray-700 h-4 rounded-full mt-4 mb-4'>
+              <div
+                className='bg-green-500 h-full rounded-full'
+                style={{ width: `${accountRank ? progressPercentage : 0}%` }}
+              ></div>
+              <div
+                className='absolute top-[-24px] right-0 text-white font-semibold'
+                style={{ right: `${100 - (accountRank ? progressPercentage : 0)}%`, transform: 'translateX(50%)' }}
+              >
+                {accountRank ? Math.round(progressPercentage) : 0}%
+              </div>
+            </div>
+          ) : (
+            <div className='w-full mt-2'>
+              {' '}
+              <h1 className='text-sm font-semibold text-red-300'>not ranked yet..</h1>
+              <div className='relative w-full bg-gray-700 h-4 rounded-full mt-4 mb-4'>
+                <div
+                  className='bg-green-500 h-full rounded-full'
+                  style={{ width: '0%' }} // No progress filled
+                ></div>
+                <div
+                  className='absolute top-[-24px] right-0 text-white font-semibold'
+                  style={{ right: '100%', transform: 'translateX(50%)' }} // Text shows 0%
+                >
+                  0%
+                </div>
+              </div>
+            </div>
+          )}
           <div className='max-w-2xl w-full'>
             <h2 className='text-2xl font-semibold text-white mb-2 text-center'>Last {TARGET_CHAMPION_NAME} win:</h2>
             <div className='bg-white p-4 rounded-lg shadow-md w-full'>
@@ -229,54 +260,42 @@ const Home = () => {
               )}
             </div>
           </div>
-          <div className='flex justify-center text-center items-center mt-4'>
-            <h1 className='text-2xl font-semibold text-white mb-2'>Recent stats</h1>
-          </div>
-          <div className='flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-8 w-full md:w-3/4'>
-            <div className='bg-white max-w-xl w-full md:w-80 p-4 rounded-lg shadow-md'>
-              <h2 className='text-2xl font-semibold text-gray-800 mb-2 text-center'>Avg KDA</h2>
-              {!averageKDA ? (
-                <div className='flex justify-center'>
-                  <Bars color='dark-gray-900' height={18} width={18} />
-                </div>
-              ) : (
-                <p className='text-3xl text-gray-800 text-center'>{averageKDA}</p>
-              )}
+          {loading ? (
+            <div className='text-center text-lg font-semibold text-gray-800'>Loading...</div>
+          ) : filtered.length > 0 ? (
+            <>
+              <div className='flex justify-center text-center items-center mt-4'>
+                <h1 className='text-2xl font-semibold text-white mb-2'>Recent stats</h1>
+              </div>
+              <div className='flex flex-col md:flex-row space-y-8 md:space-y-0 md:space-x-8 w-full md:w-3/4'>
+                {[
+                  { title: 'Avg KDA', value: averageKDA },
+                  { title: 'Skillshots Dodged', value: totalSkillshotsDodged },
+                  {
+                    title: 'Average KP',
+                    value: averageKillParticipation ? Math.round(averageKillParticipation) + '%' : null,
+                  },
+                  { title: 'ALL IN SPAM PINGS', value: totalAllInPings },
+                ].map(({ title, value }, index) => (
+                  <div key={index} className='bg-white max-w-xl w-full md:w-80 p-4 rounded-lg shadow-md'>
+                    <h2 className='text-2xl font-semibold text-gray-800 mb-2 text-center'>{title}:</h2>
+                    {!value ? (
+                      <div className='flex justify-center'>
+                        <Bars color='dark-gray-900' height={18} width={18} />
+                      </div>
+                    ) : (
+                      <p className='text-3xl text-gray-800 text-center'>{value}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </>
+          ) : (
+            <div className='mt-12  text-2xl text-red-300 font-semibold'>
+              no recent matches found for this champ.. try again bro
             </div>
+          )}
 
-            <div className='bg-white max-w-xl w-full md:w-80 p-4 rounded-lg shadow-md'>
-              <h2 className='text-2xl font-semibold text-gray-800 mb-2 text-center'>Skillshots Dodged:</h2>
-              {!totalSkillshotsDodged ? (
-                <div className='flex justify-center'>
-                  <Bars color='dark-gray-900' height={18} width={18} />
-                </div>
-              ) : (
-                <p className='text-3xl text-gray-800 text-center'>{totalSkillshotsDodged}</p>
-              )}
-            </div>
-
-            <div className='bg-white max-w-xl w-full md:w-80 p-4 rounded-lg shadow-md'>
-              <h2 className='text-2xl font-semibold text-gray-800 mb-2 text-center'>Average KP:</h2>
-              {!averageKillParticipation ? (
-                <div className='flex justify-center'>
-                  <Bars color='dark-gray-900' height={18} width={18} />
-                </div>
-              ) : (
-                <p className='text-3xl text-gray-800 text-center'>{Math.round(averageKillParticipation)}%</p>
-              )}
-            </div>
-
-            <div className='bg-white max-w-xl w-full md:w-80 p-4 rounded-lg shadow-md'>
-              <h2 className='text-2xl font-semibold text-gray-800 mb-2 text-center'>ALL IN SPAM PINGS:</h2>
-              {!totalAllInPings ? (
-                <div className='flex justify-center'>
-                  <Bars color='dark-gray-900' height={18} width={18} />
-                </div>
-              ) : (
-                <p className='text-3xl text-gray-800 text-center'>{totalAllInPings}</p>
-              )}
-            </div>
-          </div>
           {/* </div> */}
         </div>
       )}

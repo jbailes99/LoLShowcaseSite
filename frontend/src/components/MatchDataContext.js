@@ -13,14 +13,13 @@ export const MatchDataProvider = ({ children }) => {
 
   const [lastDravenWin, setLastDravenWin] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [loadingProgressBar, setLoadingProgressBar] = useState(true)
+  const [filtered, setFiltered] = useState(0)
   const [error, setError] = useState(null)
   const [error429, setError429] = useState(null)
 
   const [totalSkillshotsDodged, setTotalSkillShotsDodged] = useState(0)
   const [averageKillParticipation, setAverageKillParticipation] = useState(0) // New state for average KP
-
-  const summonerId = 'ddERbga-7B0qbSpQUo_Biz8KjK4eb4EnfrVZssaKMq7o6Ef5'
-  const puuid = 'Vi97LlByVxO0yexpdVJSW1ChAjUwd7r8CW1OcZnFSsyZMbJV88TRaovyWrWSP1uesGx6pTTXQhArAQ'
 
   //set game name, tagline, and target champion to track
 
@@ -53,34 +52,43 @@ export const MatchDataProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchAccountId = async () => {
-      try {
-        const response = await fetch(`${backendUrl}/api/account/id/${account.puuid}`)
-        const data = await response.json()
-        console.log(data)
-        setAccountId(data)
-      } catch (error) {
-        console.error('Error fetching data:', error)
+      if (account?.puuid) {
+        try {
+          const response = await fetch(`${backendUrl}/api/poop/id/${account.puuid}`)
+          const data = await response.json()
+          console.log('accpimt id', data)
+          setAccountId(data)
+        } catch (error) {
+          console.error('Error fetching data:', error)
+        }
       }
     }
 
     fetchAccountId()
-  }, [])
+  }, [account])
 
   useEffect(() => {
     const fetchAccountRank = async () => {
       try {
-        const response = await fetch(`${backendUrl}/api/league/${accountId.id}`)
-        const data = await response.json()
+        if (accountId?.id) {
+          console.log('Fetching rank for accountId:', accountId.id)
+          const response = await fetch(`${backendUrl}/api/league/${accountId.id}`)
+          const data = await response.json()
+          console.log('Rank data:', data)
 
-        setAccountRank(data[0])
-        console.log('rank data:', accountRank.rank)
+          setAccountRank(data[0]) // Set the first rank data
+          setLoadingProgressBar(false)
+        }
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.error('Error fetching account rank:', error)
       }
     }
-    fetchAccountRank()
-  }, [])
 
+    fetchAccountRank() // Call the function here, outside its own definition
+  }, [accountId]) // This effect now depends on `accountId`
+
+  // Separate useEffect to log accountRank after it's been updated
+  const filteredMatches = 0
   useEffect(() => {
     const fetchMatchHistory = async () => {
       if (account?.puuid) {
@@ -107,6 +115,10 @@ export const MatchDataProvider = ({ children }) => {
               participant => participant.puuid === account.puuid && participant.championName === TARGET_CHAMPION_NAME
             )
           )
+
+          setFiltered(filteredMatches)
+
+          console.log('filtered matches for the champ:', filteredMatches)
 
           const sortedMatches = filteredMatches.sort((a, b) => b.info.gameStartTimestamp - a.info.gameStartTimestamp)
           const lastWin = sortedMatches.find(match => {
@@ -157,6 +169,9 @@ export const MatchDataProvider = ({ children }) => {
               ? (totalStats.totalKP / totalStats.matchCount) * 100 // Convert to percentage and round to the nearest whole number
               : 0
 
+          console.log('avg KDA:', avgKDA)
+          console.log('avgkp:', avgKillParticipation)
+
           setMatches(filteredMatches)
           setAverageKDA(avgKDA.toFixed(2))
           setLastDravenWin(lastWin || null)
@@ -179,8 +194,9 @@ export const MatchDataProvider = ({ children }) => {
     <MatchDataContext.Provider
       value={{
         GAME_NAME,
-        TAG_LINE,
+        filtered,
         region,
+        TAG_LINE,
         TARGET_CHAMPION_NAME,
         error429,
         account,
@@ -189,6 +205,7 @@ export const MatchDataProvider = ({ children }) => {
         averageKDA,
         totalSkillshotsDodged,
         loading,
+        loadingProgressBar,
         error,
         averageKillParticipation,
         totalAssistPings,
