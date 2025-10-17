@@ -34,6 +34,7 @@ export const MatchDataProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchAccountDetails = async () => {
+      console.log('backend url', backendUrl)
       try {
         const response = await fetch(`${backendUrl}/api/account/${GAME_NAME}/${TAG_LINE}`)
         const data = await response.json()
