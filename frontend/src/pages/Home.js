@@ -32,6 +32,8 @@ const Home = () => {
   //challenger is default
   const goalRank = 'CHALLENGER'
 
+  console.log('account rank:' + accountRank)
+
   function getTimeAgo(gameStartTimestamp) {
     const currentTime = Date.now()
     const timeDifference = currentTime - gameStartTimestamp

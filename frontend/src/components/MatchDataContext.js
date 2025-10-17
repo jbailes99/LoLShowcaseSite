@@ -41,6 +41,8 @@ export const MatchDataProvider = ({ children }) => {
           setError429(429) // Set the error to 429 for "Too Many Requests"
           console.log('ERROR:', error429)
         }
+        // console.log('puuid', data)
+
         setAccount(data)
       } catch (error) {
         console.error('Error fetching data:', error)
@@ -51,32 +53,14 @@ export const MatchDataProvider = ({ children }) => {
   }, [])
 
   useEffect(() => {
-    const fetchAccountId = async () => {
-      if (account?.puuid) {
-        try {
-          const response = await fetch(`${backendUrl}/api/poop/id/${account.puuid}`)
-          const data = await response.json()
-          console.log('accpimt id', data)
-          setAccountId(data)
-        } catch (error) {
-          console.error('Error fetching data:', error)
-        }
-      }
-    }
-
-    fetchAccountId()
-  }, [account])
-
-  useEffect(() => {
     const fetchAccountRank = async () => {
       try {
-        if (accountId?.id) {
-          console.log('Fetching rank for accountId:', accountId.id)
-          const response = await fetch(`${backendUrl}/api/league/${accountId.id}`)
+        if (account?.puuid) {
+          const response = await fetch(`${backendUrl}/api/league/${account.puuid}`)
           const data = await response.json()
-          console.log('Rank data:', data)
 
           setAccountRank(data[0]) // Set the first rank data
+
           setLoadingProgressBar(false)
         }
       } catch (error) {
@@ -85,7 +69,7 @@ export const MatchDataProvider = ({ children }) => {
     }
 
     fetchAccountRank() // Call the function here, outside its own definition
-  }, [accountId]) // This effect now depends on `accountId`
+  }, [account]) // This effect now depends on `accountId`
 
   // Separate useEffect to log accountRank after it's been updated
   const filteredMatches = 0
