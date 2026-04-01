@@ -23,7 +23,7 @@ export const MatchDataProvider = ({ children }) => {
 
   //set game name, tagline, and target champion to track
 
-  const GAME_NAME = 'DAGESTAN WARRIOR'
+  const GAME_NAME = 'feeling in color'
   const TAG_LINE = 'NA1'
   const TARGET_CHAMPION_NAME = 'Vayne'
   const region = 'na'
@@ -97,8 +97,8 @@ export const MatchDataProvider = ({ children }) => {
 
           const filteredMatches = matchesDetails.filter(match =>
             match.info.participants.some(
-              participant => participant.puuid === account.puuid && participant.championName === TARGET_CHAMPION_NAME
-            )
+              participant => participant.puuid === account.puuid && participant.championName === TARGET_CHAMPION_NAME,
+            ),
           )
 
           setFiltered(filteredMatches)
@@ -143,7 +143,7 @@ export const MatchDataProvider = ({ children }) => {
               totalAllIn: 0,
               totalAssistPings: 0,
               matchCount: 0,
-            }
+            },
           )
 
           const avgKDA =
