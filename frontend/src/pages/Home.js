@@ -134,7 +134,7 @@ const Home = () => {
               <Bars color='white' height={32} width={32} />
             </div>
           ) : accountRank ? (
-            <div className='flex space-x-24 sm:mb-0 mb-4'>
+            <div className='flex justify-between w-2/3 sm:mb-0 mb-4'>
               <div>
                 <div className='flex flex-col sm:flex-row items-center'>
                   <h1 className='text-xl font-semibold sm:mr-0 mb-0 sm:mb-0'>CURRENT RANK:</h1>
@@ -214,42 +214,47 @@ const Home = () => {
                 <div className='text-center text-lg font-semibold text-gray-800'>Loading...</div>
               ) : lastDravenWin ? (
                 <>
-                  <h2 className='sm:text-2xl text-xl font-semibold text-green-500 mb-2 text-center flex items-center justify-center'>
-                    <FaCheck className='text-green-500 mr-4' />
-                    {getTimeAgo(lastDravenWin.info.gameStartTimestamp)}
-                  </h2>
-                  <div className='flex items-center space-x-4'>
-                    <img
-                      className='h-24 w-24 rounded-full border-4 border-yellow-400'
-                      src={`https://ddragon.leagueoflegends.com/cdn/13.18.1/img/champion/${TARGET_CHAMPION_NAME}.png`}
-                      alt='Draven'
-                    />
-                    <div className='flex-1'>
-                      {lastDravenWin.info.participants && (
-                        <div className='mt-4'>
-                          {lastDravenWin.info.participants.map(participant => {
-                            if (participant.puuid === account.puuid && participant.championName === 'Draven') {
-                              return (
-                                <p key={participant.puuid} className='text-2xl mb-2 font-medium text-gray-800'>
-                                  {participant.kills}/{participant.deaths}/{participant.assists}
-                                </p>
-                              )
-                            }
-                            return null
-                          })}
-                        </div>
-                      )}
+                  <div className='relative flex flex-col items-center justify-center'>
+                    {/* Image positioned independently */}
+                    <div className='absolute left-0 md:left-4 top-1/2 transform -translate-y-1/2'>
+                      <img
+                        className='h-24 w-24 rounded-full border-4 border-yellow-400'
+                        src={`https://ddragon.leagueoflegends.com/cdn/13.18.1/img/champion/${TARGET_CHAMPION_NAME}.png`}
+                        alt={TARGET_CHAMPION_NAME}
+                      />
+                    </div>
+
+                    {/* Centered text */}
+                    <div className='flex flex-col items-center justify-center'>
+                      <h2 className='text-3xl font-semibold mb-2 text-green-500 flex items-center justify-center'>
+                        <FaCheck className='text-green-500 mr-2' />
+                        {getTimeAgo(lastDravenWin.info.gameStartTimestamp)}
+                      </h2>
+
+                      {lastDravenWin.info.participants &&
+                        lastDravenWin.info.participants.map(participant => {
+                          if (
+                            participant.puuid === account.puuid &&
+                            participant.championName === TARGET_CHAMPION_NAME
+                          ) {
+                            return (
+                              <p key={participant.puuid} className='text-2xl font-medium text-gray-800'>
+                                {participant.kills}/{participant.deaths}/{participant.assists}
+                              </p>
+                            )
+                          }
+                          return null
+                        })}
+
                       <p className='text-lg font-medium text-gray-600'>
                         Duration: {Math.floor(lastDravenWin.info.gameDuration / 60)} minutes
                       </p>
                       <p
-                        className={`text-2xl font-medium ${
-                          lastDravenWin.info.teams.some(team => team.win) ? 'text-green-500' : 'text-red-500'
-                        }`}
+                        className={`text-2xl font-medium ${lastDravenWin.info.teams.some(team => team.win) ? 'text-green-500' : 'text-red-500'}`}
                       >
                         {lastDravenWin.info.teams.some(team => team.win) ? 'Victory' : 'Defeat'}
                       </p>
-                      <p className='text-sm font-semibold sm:text-right sm:mt-0 mt-4 text-gray-800 mb-2'>
+                      <p className='text-sm font-semibold mt-2 text-gray-800'>
                         {new Date(lastDravenWin.info.gameStartTimestamp).toLocaleString()}
                       </p>
                     </div>
