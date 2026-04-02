@@ -286,11 +286,11 @@ const Home = () => {
             </div>
           )}
 
-          <div className='flex- flex justify-center text-center items-center mt-4'>
+          {/* <div className='flex- flex justify-center text-center items-center mt-4'>
             <h1 className='text-2xl flex-col font-semibold text-white mb-2'>Am I tilted?</h1>
 
             <h1 className='text-2xl flex-colfont-semibold text-white mb-2'>hey</h1>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

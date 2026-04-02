@@ -9,7 +9,7 @@ function Navbar() {
       <div className='container mx-auto flex items-center justify-center'>
         {/* Left-aligned username */}
         <div className='absolute left-12 hidden sm:block text-red-500 text-3xl font-bold lowercase'>
-          <Link to='/'>best{TARGET_CHAMPION_NAME}.world</Link>
+          <Link to='/'>best {TARGET_CHAMPION_NAME} NA</Link>
         </div>
 
         {/* Centered links */}
