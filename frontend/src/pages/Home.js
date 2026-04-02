@@ -106,7 +106,7 @@ const Home = () => {
   return (
     <div className='sm:m-8 m-4 sm:rounded-xl rounded-xl sm:p-0 p-4 justify-center text-center bg-gray-900 text-white'>
       <header className='text-center sm:py-8'>
-        <h1 className='text-4xl sm:hidden block font-bold mb-8 text-yellow-600'>best{TARGET_CHAMPION_NAME}.world</h1>
+        <h1 className='text-4xl sm:hidden block font-bold mb-8 text-yellow-600'>{TARGET_CHAMPION_NAME} god</h1>
         <h1 className='sm:text-5xl text-3xl font-bold mb-4 text-red-500'>{account?.gameName}</h1>
         <p className='sm:text-2xl text-2xl mb-2'>u are visiting the best {TARGET_CHAMPION_NAME} player in the world</p>
       </header>
@@ -285,6 +285,12 @@ const Home = () => {
               no recent matches found for this champ.. try again bro
             </div>
           )}
+
+          <div className='flex- flex justify-center text-center items-center mt-4'>
+            <h1 className='text-2xl flex-col font-semibold text-white mb-2'>Am I tilted?</h1>
+
+            <h1 className='text-2xl flex-colfont-semibold text-white mb-2'>hey</h1>
+          </div>
         </div>
       )}
     </div>
